@@ -136,6 +136,7 @@ void Mainframe::gameScreen() {
 	setBallParameters();
 	setPlayerParameters();
 	ball[0].active = true;
+	setBlockParameters();
 	setLevelOne();
 
 	while (!WindowShouldClose() && screenId == screenID::game&&_mainBool) {
@@ -187,8 +188,12 @@ void Mainframe::draw() {
 			DrawCircle(ball[i].pos.x, ball[i].pos.y, ball[i].radius, ball[i].color);
 		}
 	}
+	DrawRectangleRec(block[0].rec, RED);
 	for (int i = 0; i < BlockAmount; i++){
 		if (block[i].active){
+#if DEBUG
+			cout << "Drawing?" << endl;
+#endif
 			DrawRectangleRec(block[i].rec,RED);
 		}
 	}
@@ -227,6 +232,48 @@ void Mainframe::input() {
 }
 void Mainframe::collisions(){
 
+	//BALLS V BRICKS
+	for (int i = 0; i < LINES_OF_BRICKS; i++)
+	{
+		for (int j = 0; j < BRICKS_PER_LINE; j++)
+		{
+			if (brick[i][j].active)
+			{
+				// Hit below
+				if (((ball.position.y - ball.radius) <= (brick[i][j].position.y + brickSize.y / 2)) &&
+					((ball.position.y - ball.radius) > (brick[i][j].position.y + brickSize.y / 2 + ball.speed.y)) &&
+					((fabs(ball.position.x - brick[i][j].position.x)) < (brickSize.x / 2 + ball.radius * 2 / 3)) && (ball.speed.y < 0))
+				{
+					brick[i][j].active = false;
+					ball.speed.y *= -1;
+				}
+				// Hit above
+				else if (((ball.position.y + ball.radius) >= (brick[i][j].position.y - brickSize.y / 2)) &&
+					((ball.position.y + ball.radius) < (brick[i][j].position.y - brickSize.y / 2 + ball.speed.y)) &&
+					((fabs(ball.position.x - brick[i][j].position.x)) < (brickSize.x / 2 + ball.radius * 2 / 3)) && (ball.speed.y > 0))
+				{
+					brick[i][j].active = false;
+					ball.speed.y *= -1;
+				}
+				// Hit left
+				else if (((ball.position.x + ball.radius) >= (brick[i][j].position.x - brickSize.x / 2)) &&
+					((ball.position.x + ball.radius) < (brick[i][j].position.x - brickSize.x / 2 + ball.speed.x)) &&
+					((fabs(ball.position.y - brick[i][j].position.y)) < (brickSize.y / 2 + ball.radius * 2 / 3)) && (ball.speed.x > 0))
+				{
+					brick[i][j].active = false;
+					ball.speed.x *= -1;
+				}
+				// Hit right
+				else if (((ball.position.x - ball.radius) <= (brick[i][j].position.x + brickSize.x / 2)) &&
+					((ball.position.x - ball.radius) > (brick[i][j].position.x + brickSize.x / 2 + ball.speed.x)) &&
+					((fabs(ball.position.y - brick[i][j].position.y)) < (brickSize.y / 2 + ball.radius * 2 / 3)) && (ball.speed.x < 0))
+				{
+					brick[i][j].active = false;
+					ball.speed.x *= -1;
+				}
+			}
+		}
+	}
 	//BALLS V WALLS
 	for (int i = 0; i < BallAmount; i++){
 		if (ball[i].active){

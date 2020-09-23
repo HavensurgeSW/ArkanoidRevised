@@ -6,7 +6,7 @@ struct Block {
 	bool active;
 };
 
-const int BlockAmount = 40;
+const int BlockAmount = 72;
 extern Block block[BlockAmount];
 extern const float BlockSpacing;
 

@@ -1,14 +1,14 @@
 #include "LevelBuilder.h"
 #include <iostream>
 
-Vector2 coordinates = { 0.0f, 100.0f };
+Vector2 coordinates = { 14.0f, 5.0f };
 
 void setLevelOne() {
 	int row = 1;
 	for (int i = 0; i < BlockAmount; i++){
-		if (row>8){
-			coordinates.y += 6.25f;
-			coordinates.x = 0;
+		if (row>BlockAmount/9){
+			coordinates.y += BlockSpacing+block[i].rec.height;
+			coordinates.x = 14.0f;
 			row = 1;
 		}
 		std::cout << "test"<< i << std::endl;
