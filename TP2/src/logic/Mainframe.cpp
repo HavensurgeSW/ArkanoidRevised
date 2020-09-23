@@ -233,45 +233,44 @@ void Mainframe::input() {
 void Mainframe::collisions(){
 
 	//BALLS V BRICKS
-	for (int i = 0; i < LINES_OF_BRICKS; i++)
-	{
-		for (int j = 0; j < BRICKS_PER_LINE; j++)
+	for (int j = 0; j < BallAmount; j++){
+		for (int i = 0; i < BlockAmount; i++)
 		{
-			if (brick[i][j].active)
-			{
-				// Hit below
-				if (((ball.position.y - ball.radius) <= (brick[i][j].position.y + brickSize.y / 2)) &&
-					((ball.position.y - ball.radius) > (brick[i][j].position.y + brickSize.y / 2 + ball.speed.y)) &&
-					((fabs(ball.position.x - brick[i][j].position.x)) < (brickSize.x / 2 + ball.radius * 2 / 3)) && (ball.speed.y < 0))
-				{
-					brick[i][j].active = false;
-					ball.speed.y *= -1;
+				if (block[i].active){
+					// Hit below
+					if (((ball[j].pos.y - ball[j].radius) <= (block[i].rec.y + block[i].rec.y / 2)) &&
+						((ball[j].pos.y - ball[j].radius) > (block[i].rec.y + block[i].rec.y / 2 + ball[j].speed.y)) &&
+						((fabs(ball[j].pos.x - block[i].rec.x)) < (block[i].rec.x / 2 + ball[j].radius * 2 / 3)) && (ball[j].speed.y < 0))
+					{
+						block[i].active = false;
+						ball[j].speed.y *= -1;
+					}
+					// Hit above
+					else if (((ball[j].pos.y + ball[j].radius) >= (block[i].rec.y - block[i].rec.y / 2)) &&
+						((ball[j].pos.y + ball[j].radius) < (block[i].rec.y - block[i].rec.y / 2 + ball[j].speed.y)) &&
+						((fabs(ball[j].pos.x - block[i].rec.x)) < (block[i].rec.x / 2 + ball[j].radius * 2 / 3)) && (ball[j].speed.y > 0))
+					{
+						block[i].active = false;
+						ball[j].speed.y *= -1;
+					}
+					// Hit left
+					else if (((ball[j].pos.x + ball[j].radius) >= (block[i].rec.x - block[i].rec.x / 2)) &&
+						((ball[j].pos.x + ball[j].radius) < (block[i].rec.x - block[i].rec.x / 2 + ball[j].speed.x)) &&
+						((fabs(ball[j].pos.y - block[i].rec.y)) < (block[i].rec.y / 2 + ball[j].radius * 2 / 3)) && (ball[j].speed.x > 0))
+					{
+						block[i].active = false;
+						ball[j].speed.x *= -1;
+					}
+					// Hit right
+					else if (((ball[j].pos.x - ball[j].radius) <= (block[i].rec.x + block[i].rec.x / 2)) &&
+						((ball[j].pos.x - ball[j].radius) > (block[i].rec.x + block[i].rec.x / 2 + ball[j].speed.x)) &&
+						((fabs(ball[j].pos.y - block[i].rec.y)) < (block[i].rec.y / 2 + ball[j].radius * 2 / 3)) && (ball[j].speed.x < 0))
+					{
+						block[i].active = false;
+						ball[j].speed.x *= -1;
+					}
 				}
-				// Hit above
-				else if (((ball.position.y + ball.radius) >= (brick[i][j].position.y - brickSize.y / 2)) &&
-					((ball.position.y + ball.radius) < (brick[i][j].position.y - brickSize.y / 2 + ball.speed.y)) &&
-					((fabs(ball.position.x - brick[i][j].position.x)) < (brickSize.x / 2 + ball.radius * 2 / 3)) && (ball.speed.y > 0))
-				{
-					brick[i][j].active = false;
-					ball.speed.y *= -1;
-				}
-				// Hit left
-				else if (((ball.position.x + ball.radius) >= (brick[i][j].position.x - brickSize.x / 2)) &&
-					((ball.position.x + ball.radius) < (brick[i][j].position.x - brickSize.x / 2 + ball.speed.x)) &&
-					((fabs(ball.position.y - brick[i][j].position.y)) < (brickSize.y / 2 + ball.radius * 2 / 3)) && (ball.speed.x > 0))
-				{
-					brick[i][j].active = false;
-					ball.speed.x *= -1;
-				}
-				// Hit right
-				else if (((ball.position.x - ball.radius) <= (brick[i][j].position.x + brickSize.x / 2)) &&
-					((ball.position.x - ball.radius) > (brick[i][j].position.x + brickSize.x / 2 + ball.speed.x)) &&
-					((fabs(ball.position.y - brick[i][j].position.y)) < (brickSize.y / 2 + ball.radius * 2 / 3)) && (ball.speed.x < 0))
-				{
-					brick[i][j].active = false;
-					ball.speed.x *= -1;
-				}
-			}
+		
 		}
 	}
 	//BALLS V WALLS
