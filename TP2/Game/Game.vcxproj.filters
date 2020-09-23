@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{b3725266-fbfa-4bfe-b9b5-a333246c0c24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\logic">
+      <UniqueIdentifier>{f536015c-edcd-412e-b9d0-b7fcd2062f49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\objects">
+      <UniqueIdentifier>{abf48543-5dbe-485e-9b97-955db371caeb}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\main.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\logic\Mainframe.cpp">
+      <Filter>src\logic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\objects\ball.cpp">
+      <Filter>src\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\objects\player.cpp">
+      <Filter>src\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelBuilder.cpp" />
+    <ClCompile Include="Block.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\src\logic\Mainframe.h">
+      <Filter>src\logic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\objects\ball.h">
+      <Filter>src\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\objects\player.h">
+      <Filter>src\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelBuilder.h">
+      <Filter>src\logic</Filter>
+    </ClInclude>
+    <ClInclude Include="Block.h">
+      <Filter>src\objects</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
