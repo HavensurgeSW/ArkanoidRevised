@@ -136,6 +136,7 @@ void Mainframe::gameScreen() {
 	setBallParameters();
 	setPlayerParameters();
 	ball[0].active = true;
+	setLevelOne();
 
 	while (!WindowShouldClose() && screenId == screenID::game&&_mainBool) {
 
@@ -181,10 +182,14 @@ void Mainframe::draw() {
 	//FONDO?
 
 	DrawRectangleRec(player.rec, GOLD);
-	cout << "DrawFunc" << endl;
-	for (int i = 0; i <BallAmount; i++){
-		if (ball[i].active){
-			DrawCircle(ball[i].pos.x,ball[i].pos.y,ball[i].radius,ball[i].color);
+	for (int i = 0; i < BallAmount; i++) {
+		if (ball[i].active) {
+			DrawCircle(ball[i].pos.x, ball[i].pos.y, ball[i].radius, ball[i].color);
+		}
+	}
+	for (int i = 0; i < BlockAmount; i++){
+		if (block[i].active){
+			DrawRectangleRec(block[i].rec,RED);
 		}
 	}
 

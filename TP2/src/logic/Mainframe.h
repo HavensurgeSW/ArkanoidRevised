@@ -2,6 +2,7 @@
 #include "raylib.h"
 #include "objects/player.h"
 #include "objects/ball.h"
+#include "logic/LevelBuilder.h"
 #include <iostream>
 using namespace std;
 using namespace PLYR;

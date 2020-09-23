@@ -19,19 +19,19 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\logic\LevelBuilder.cpp" />
     <ClCompile Include="..\src\logic\Mainframe.cpp" />
     <ClCompile Include="..\src\main.cpp" />
     <ClCompile Include="..\src\objects\ball.cpp" />
+    <ClCompile Include="..\src\objects\Block.cpp" />
     <ClCompile Include="..\src\objects\player.cpp" />
-    <ClCompile Include="Block.cpp" />
-    <ClCompile Include="LevelBuilder.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\src\logic\LevelBuilder.h" />
     <ClInclude Include="..\src\logic\Mainframe.h" />
     <ClInclude Include="..\src\objects\ball.h" />
+    <ClInclude Include="..\src\objects\Block.h" />
     <ClInclude Include="..\src\objects\player.h" />
-    <ClInclude Include="Block.h" />
-    <ClInclude Include="LevelBuilder.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

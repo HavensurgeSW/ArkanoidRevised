@@ -15,32 +15,36 @@
     <ClCompile Include="..\src\main.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\logic\Mainframe.cpp">
-      <Filter>src\logic</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\objects\ball.cpp">
       <Filter>src\objects</Filter>
     </ClCompile>
     <ClCompile Include="..\src\objects\player.cpp">
       <Filter>src\objects</Filter>
     </ClCompile>
-    <ClCompile Include="LevelBuilder.cpp" />
-    <ClCompile Include="Block.cpp" />
+    <ClCompile Include="..\src\logic\LevelBuilder.cpp">
+      <Filter>src\logic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\logic\Mainframe.cpp">
+      <Filter>src\logic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\objects\Block.cpp">
+      <Filter>src\objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\logic\Mainframe.h">
-      <Filter>src\logic</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\objects\ball.h">
       <Filter>src\objects</Filter>
     </ClInclude>
     <ClInclude Include="..\src\objects\player.h">
       <Filter>src\objects</Filter>
     </ClInclude>
-    <ClInclude Include="LevelBuilder.h">
+    <ClInclude Include="..\src\logic\LevelBuilder.h">
       <Filter>src\logic</Filter>
     </ClInclude>
-    <ClInclude Include="Block.h">
+    <ClInclude Include="..\src\logic\Mainframe.h">
+      <Filter>src\logic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\objects\Block.h">
       <Filter>src\objects</Filter>
     </ClInclude>
   </ItemGroup>
