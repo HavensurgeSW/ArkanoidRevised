@@ -10,7 +10,9 @@ void createBlocks() {
 			coordinates.x = 14.0f;
 			row = 1;
 		}
+#if DEBUG
 		std::cout << "test" << i << std::endl;
+#endif
 		block[i].rec.x = coordinates.x;
 		block[i].rec.y = coordinates.y;
 		coordinates.x += BlockSpacing + block[i].rec.width;

@@ -195,9 +195,10 @@ void Mainframe::draw() {
 	for (int i = 0; i < BlockAmount; i++){
 		if (block[i].active){
 #if DEBUG
-			cout << "Drawing?" << endl;
+			//cout << "Drawing Blocks" << endl;
 #endif
-			DrawRectangleRec(block[i].rec,RED);
+			DrawRectangleRec(block[i].rec,BLUE);
+			DrawTexture(block[i].BlockHedron, block[i].rec.x, block[i].rec.y, RAYWHITE);
 		}
 	}
 
@@ -241,37 +242,43 @@ void Mainframe::collisions(){
 		{
 				if (block[i].active){
 					// Hit below
-					if (((ball[0].pos.y - ball[0].radius) <= (block[i].rec.y + block[i].rec.height / 2)) &&
-						((ball[0].pos.y - ball[0].radius) > (block[i].rec.y + block[i].rec.height / 2 + ball[0].speed.y)) &&
-						((fabs(ball[0].pos.x - block[i].rec.x)) < (block[i].rec.width / 2 + ball[0].radius * 2 / 3)) && (ball[0].speed.y < 0))
+					if (((ball[j].pos.y - ball[j].radius) <= (block[i].rec.y + block[i].rec.height / 2)) &&
+						((ball[j].pos.y - ball[j].radius) > (block[i].rec.y + block[i].rec.height / 2 + ball[0].speed.y)) &&
+						((fabs(ball[0].pos.x - block[i].rec.x)) < (block[i].rec.width / 2 + ball[j].radius * 2 / 3)) && (ball[j].speed.y < 0))
 					{
 						block[i].active = false;
-						ball[0].speed.y *= -1;
+						ball[j].speed.y *= -1;
+#if DEBUG
+						cout << "Hit Below" << endl;
+#endif
 					}
 					// Hit above
-					/*else if (((ball[0].pos.y + ball[0].radius) >= (block[i].rec.y - block[i].rec.height / 2)) &&
-						((ball[0].pos.y + ball[0].radius) < (block[i].rec.y - block[i].rec.height / 2 + ball[0].speed.y)) &&
-						((fabs(ball[0].pos.x - block[i].rec.x)) < (block[i].rec.width / 2 + ball[0].radius * 2 / 3)) && (ball[0].speed.y > 0))
+					else if (((ball[j].pos.y + ball[j].radius) >= (block[i].rec.y - block[i].rec.height / 2)) &&
+						((ball[j].pos.y + ball[j].radius) < (block[i].rec.y - block[i].rec.height / 2 + ball[j].speed.y)) &&
+						((fabs(ball[j].pos.x - block[i].rec.x)) < (block[i].rec.width / 2 + ball[j].radius * 2 / 3)) && (ball[j].speed.y > 0))
 					{
 						block[i].active = false;
-						ball[0].speed.y *= -1;
-					}*/
+						ball[j].speed.y *= -1;
+#if DEBUG
+						cout << "Hit above" << endl;
+#endif
+					}
 				//	// Hit left
-					/*else if (((ball[0].pos.x + ball[0].radius) >= (block[i].rec.x - block[i].rec.width / 2)) &&
+					else if (((ball[0].pos.x + ball[0].radius) >= (block[i].rec.x - block[i].rec.width / 2)) &&
 						((ball[0].pos.x + ball[0].radius) < (block[i].rec.x - block[i].rec.width / 2 + ball[0].speed.x)) &&
 						((fabs(ball[0].pos.y - block[i].rec.y)) < (block[i].rec.height / 2 + ball[0].radius * 2 / 3)) && (ball[0].speed.x > 0))
 					{
 						block[i].active = false;
 						ball[0].speed.x *= -1;
-					}*/
+					}
 				//	// Hit right
-					/*else if (((ball[0].pos.x - ball[0].radius) <= (block[i].rec.x + block[i].rec.width / 2)) &&
+					else if (((ball[0].pos.x - ball[0].radius) <= (block[i].rec.x + block[i].rec.width / 2)) &&
 						((ball[0].pos.x - ball[0].radius) > (block[i].rec.x + block[i].rec.width / 2 + ball[0].speed.x)) &&
 						((fabs(ball[0].pos.y - block[i].rec.y)) < (block[i].rec.height / 2 + ball[0].radius * 2 / 3)) && (ball[0].speed.x < 0))
 					{
 						block[i].active = false;
 						ball[0].speed.x *= -1;
-					}*/
+					}
 				}
 		
 		}

@@ -2,7 +2,7 @@
 namespace PLYR {
 	Player player;
 	const Vector2 PlayerSize = { 95.0f, 12.0f };
-	const Vector2 PlayerSpeed = {420.0f,120.0f};
+	const Vector2 PlayerSpeed = {500.0f,120.0f};
 
 	void setPlayerParameters() {
 		player.rec.width = PlayerSize.x;
