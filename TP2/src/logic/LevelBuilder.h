@@ -4,3 +4,4 @@
 extern Vector2 coordinates;
 
 void setLevelOne();
+void setLevelTwo();

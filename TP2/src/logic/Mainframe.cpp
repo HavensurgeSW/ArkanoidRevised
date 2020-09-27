@@ -137,7 +137,7 @@ void Mainframe::gameScreen() {
 	setPlayerParameters();
 	ball[0].active = true;
 	setBlockParameters();
-	setLevelOne();
+	setLevelTwo();
 
 	while (!WindowShouldClose() && screenId == screenID::game&&_mainBool) {
 
@@ -173,6 +173,10 @@ void Mainframe::update() {
 			if (!ball[i].stop){
 				ball[i].pos.x += GetFrameTime()*ball[i].speed.x;
 				ball[i].pos.y += GetFrameTime()*ball[i].speed.y;
+				if (ball[i].pos.y<0){
+					ball[i].pos.y = 12;
+					ball[i].speed.y *= -1.0f;
+				}
 			}
 		}
 	}
@@ -188,7 +192,6 @@ void Mainframe::draw() {
 			DrawCircle(ball[i].pos.x, ball[i].pos.y, ball[i].radius, ball[i].color);
 		}
 	}
-	DrawRectangleRec(block[0].rec, RED);
 	for (int i = 0; i < BlockAmount; i++){
 		if (block[i].active){
 #if DEBUG
@@ -238,37 +241,37 @@ void Mainframe::collisions(){
 		{
 				if (block[i].active){
 					// Hit below
-					if (((ball[j].pos.y - ball[j].radius) <= (block[i].rec.y + block[i].rec.y / 2)) &&
-						((ball[j].pos.y - ball[j].radius) > (block[i].rec.y + block[i].rec.y / 2 + ball[j].speed.y)) &&
-						((fabs(ball[j].pos.x - block[i].rec.x)) < (block[i].rec.x / 2 + ball[j].radius * 2 / 3)) && (ball[j].speed.y < 0))
+					if (((ball[0].pos.y - ball[0].radius) <= (block[i].rec.y + block[i].rec.height / 2)) &&
+						((ball[0].pos.y - ball[0].radius) > (block[i].rec.y + block[i].rec.height / 2 + ball[0].speed.y)) &&
+						((fabs(ball[0].pos.x - block[i].rec.x)) < (block[i].rec.width / 2 + ball[0].radius * 2 / 3)) && (ball[0].speed.y < 0))
 					{
 						block[i].active = false;
-						ball[j].speed.y *= -1;
+						ball[0].speed.y *= -1;
 					}
 					// Hit above
-					else if (((ball[j].pos.y + ball[j].radius) >= (block[i].rec.y - block[i].rec.y / 2)) &&
-						((ball[j].pos.y + ball[j].radius) < (block[i].rec.y - block[i].rec.y / 2 + ball[j].speed.y)) &&
-						((fabs(ball[j].pos.x - block[i].rec.x)) < (block[i].rec.x / 2 + ball[j].radius * 2 / 3)) && (ball[j].speed.y > 0))
+					/*else if (((ball[0].pos.y + ball[0].radius) >= (block[i].rec.y - block[i].rec.height / 2)) &&
+						((ball[0].pos.y + ball[0].radius) < (block[i].rec.y - block[i].rec.height / 2 + ball[0].speed.y)) &&
+						((fabs(ball[0].pos.x - block[i].rec.x)) < (block[i].rec.width / 2 + ball[0].radius * 2 / 3)) && (ball[0].speed.y > 0))
 					{
 						block[i].active = false;
-						ball[j].speed.y *= -1;
-					}
-					// Hit left
-					else if (((ball[j].pos.x + ball[j].radius) >= (block[i].rec.x - block[i].rec.x / 2)) &&
-						((ball[j].pos.x + ball[j].radius) < (block[i].rec.x - block[i].rec.x / 2 + ball[j].speed.x)) &&
-						((fabs(ball[j].pos.y - block[i].rec.y)) < (block[i].rec.y / 2 + ball[j].radius * 2 / 3)) && (ball[j].speed.x > 0))
+						ball[0].speed.y *= -1;
+					}*/
+				//	// Hit left
+					/*else if (((ball[0].pos.x + ball[0].radius) >= (block[i].rec.x - block[i].rec.width / 2)) &&
+						((ball[0].pos.x + ball[0].radius) < (block[i].rec.x - block[i].rec.width / 2 + ball[0].speed.x)) &&
+						((fabs(ball[0].pos.y - block[i].rec.y)) < (block[i].rec.height / 2 + ball[0].radius * 2 / 3)) && (ball[0].speed.x > 0))
 					{
 						block[i].active = false;
-						ball[j].speed.x *= -1;
-					}
-					// Hit right
-					else if (((ball[j].pos.x - ball[j].radius) <= (block[i].rec.x + block[i].rec.x / 2)) &&
-						((ball[j].pos.x - ball[j].radius) > (block[i].rec.x + block[i].rec.x / 2 + ball[j].speed.x)) &&
-						((fabs(ball[j].pos.y - block[i].rec.y)) < (block[i].rec.y / 2 + ball[j].radius * 2 / 3)) && (ball[j].speed.x < 0))
+						ball[0].speed.x *= -1;
+					}*/
+				//	// Hit right
+					/*else if (((ball[0].pos.x - ball[0].radius) <= (block[i].rec.x + block[i].rec.width / 2)) &&
+						((ball[0].pos.x - ball[0].radius) > (block[i].rec.x + block[i].rec.width / 2 + ball[0].speed.x)) &&
+						((fabs(ball[0].pos.y - block[i].rec.y)) < (block[i].rec.height / 2 + ball[0].radius * 2 / 3)) && (ball[0].speed.x < 0))
 					{
 						block[i].active = false;
-						ball[j].speed.x *= -1;
-					}
+						ball[0].speed.x *= -1;
+					}*/
 				}
 		
 		}
@@ -288,6 +291,14 @@ void Mainframe::collisions(){
 			if (ball[i].speed.y > 0){
 				ball[i].speed.y *= -1;
 			}
+		}
+	}
+
+	//BALLS v BOTTOM
+	for (int i = 0; i < BallAmount; i++){
+		if (ball[i].pos.y>GetScreenHeight()){
+			ball[i].pos = ball[i].initPos;
+			ball[i].stop = true;
 		}
 	}
 }
