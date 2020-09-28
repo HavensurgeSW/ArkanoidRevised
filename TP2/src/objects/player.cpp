@@ -16,6 +16,7 @@ namespace AR {
 			player.speed.y = PlayerSpeed.y;
 			player.color = GOLD;
 			bool powerUp = false;
+			player.lives = 5;
 		}
 
 	

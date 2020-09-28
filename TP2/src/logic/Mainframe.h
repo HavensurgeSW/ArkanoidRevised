@@ -25,8 +25,6 @@ namespace AR {
 		screenID screenId;
 		Texture2D background;
 
-
-
 		Mainframe();
 		~Mainframe();
 		void init();

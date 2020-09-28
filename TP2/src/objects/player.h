@@ -7,6 +7,7 @@ namespace AR {
 			Vector2 speed;
 			Color color;
 			bool powerUp;
+			int lives;
 		};
 
 		extern Player player;

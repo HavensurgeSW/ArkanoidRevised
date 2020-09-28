@@ -27,6 +27,42 @@ namespace AR {
 
 	void setLevelOne() {
 		createBlocks();
+		block[3].active = false;
+		block[4].active = false;
+		block[11].active = false;
+		block[12].active = false;
+		block[19].active = false;
+		block[20].active = false;
+		block[24].active = false;
+		block[25].active = false;
+		block[26].active = false;
+		block[27].active = false;
+		block[28].active = false;
+		block[29].active = false;
+		block[30].active = false;
+		block[31].active = false;
+		block[32].active = false;
+		block[33].active = false;
+		block[34].active = false;
+		block[35].active = false;
+		block[36].active = false;
+		block[37].active = false;
+		block[38].active = false;
+		block[39].active = false;
+		block[40].active = false;
+		block[41].active = false;
+		block[42].active = false;
+		block[43].active = false;
+		block[44].active = false;
+		block[45].active = false;
+		block[46].active = false;
+		block[47].active = false;
+		block[51].active = false;
+		block[52].active = false;
+		block[59].active = false;
+		block[60].active = false;
+		block[67].active = false;
+		block[68].active = false;
 	}
 
 	void setLevelTwo() {

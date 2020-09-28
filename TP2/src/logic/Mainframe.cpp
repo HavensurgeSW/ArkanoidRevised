@@ -121,7 +121,7 @@ namespace AR {
 		setPlayerParameters();
 		ball[0].active = true;
 		setBlockParameters();
-		setLevelThree();
+		setLevelOne();
 
 		while (!WindowShouldClose() && screenId == screenID::game&&_mainBool) {
 
@@ -196,6 +196,9 @@ namespace AR {
 				}
 			}
 		}
+
+
+
 	}
 	void Mainframe::draw() {
 		BeginDrawing();
