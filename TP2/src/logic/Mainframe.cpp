@@ -120,7 +120,7 @@ void Mainframe::gameScreen() {
 	setPlayerParameters();
 	ball[0].active = true;
 	setBlockParameters();
-	setLevelTwo();
+	setLevelThree();
 
 	while (!WindowShouldClose() && screenId == screenID::game&&_mainBool) {
 
@@ -167,6 +167,15 @@ void Mainframe::update() {
 
 	if (ball[0].stop){
 		ball[0].pos.x = player.rec.x+player.rec.width/2;
+		
+		ballCol[0].pos.x = ball[0].pos.x;
+		ballCol[0].pos.y = ball[0].pos.y - 4.0f;
+		ballCol[1].pos.x = ball[0].pos.x + 4.0f;
+		ballCol[1].pos.y = ball[0].pos.y;
+		ballCol[2].pos.x = ball[0].pos.x;
+		ballCol[2].pos.y = ball[0].pos.y + 4.0f;
+		ballCol[3].pos.x = ball[0].pos.x - 4.0f;
+		ballCol[3].pos.y = ball[0].pos.y;
 	}
 
 	for (int i = 0; i < BallAmount; i++)
@@ -175,6 +184,10 @@ void Mainframe::update() {
 			if (!ball[i].stop){
 				ball[i].pos.x += GetFrameTime()*ball[i].speed.x;
 				ball[i].pos.y += GetFrameTime()*ball[i].speed.y;
+				for (int j = 0; j < BallCollisions; j++) {
+					ballCol[j].pos.x += GetFrameTime() * ball[i].speed.x;
+					ballCol[j].pos.y += GetFrameTime() * ball[i].speed.y;
+				}
 				if (ball[i].pos.y<0){
 					ball[i].pos.y = 12;
 					ball[i].speed.y *= -1.0f;
@@ -198,11 +211,19 @@ void Mainframe::draw() {
 			DrawTexture(block[i].BlockHedron, block[i].rec.x, block[i].rec.y, RAYWHITE);
 		}
 	}
+	if (ball[0].stop){
+	DrawText("-SPACE-", GetScreenWidth() / 2 - 70, GetScreenHeight() - 100, 30, WHITE);
+	}
 #if DEBUG
 	for (int i = 0; i < BlockAmount; i++){
 		DrawRectangleLines(block[i].rec.x, block[i].rec.y, block[i].rec.width, block[i].rec.height,GREEN);
 		DrawText(FormatText("%i", i),block[i].rec.x+(block[i].rec.width/2), block[i].rec.y + (block[i].rec.height / 2), 2, GREEN);
 	}
+
+	DrawCircleLines(ballCol[0].pos.x, ballCol[0].pos.y, ballCol[0].radius, GREEN);
+	DrawCircleLines(ballCol[1].pos.x, ballCol[1].pos.y, ballCol[1].radius, GREEN);
+	DrawCircleLines(ballCol[2].pos.x, ballCol[2].pos.y, ballCol[2].radius, GREEN);
+	DrawCircleLines(ballCol[3].pos.x, ballCol[3].pos.y, ballCol[3].radius, GREEN);
 #endif
 
 	EndDrawing();
@@ -222,7 +243,7 @@ void Mainframe::input() {
 	}
 
 	if(!_pause){
-		if (IsKeyPressed(KEY_P)||IsKeyPressed(KEY_ESCAPE)) {
+		if (IsKeyReleased(KEY_P)||IsKeyDown(KEY_ESCAPE)) {
 			_pause = true;
 			fflush(stdin);
 		}
@@ -230,76 +251,44 @@ void Mainframe::input() {
 }
 void Mainframe::collisions() {
 	//BALLS V BRICKS
-	for (int j = 0; j < BallAmount; j++) {
-		for (int i = 0; i < BlockAmount; i++)
-		{
-			if (block[i].active) {
-				// Hit below
-				if (((ball[j].pos.y - ball[j].radius) <= (block[i].rec.y + block[i].rec.height / 2)) &&
-					((ball[j].pos.y - ball[j].radius) > (block[i].rec.y + block[i].rec.height / 2 + ball[0].speed.y)) &&
-					((fabs(ball[0].pos.x - block[i].rec.x)) < (block[i].rec.width / 2 + ball[j].radius * 2 / 3)) && (ball[j].speed.y < 0))
-				{
+		for (int i = 0; i < BlockAmount; i++) {
+			if (block[i].active){
+				if (CheckCollisionCircleRec(ballCol[0].pos,ballCol[0].radius,block[i].rec)){
 					block[i].active = false;
-					ball[j].speed.y *= -1;
-#if DEBUG
-					cout << "Hit Below" << endl;
-#endif
+					ball[0].speed.y *= -1.0f;
 				}
-				//				// Hit above
-				//				else if (((ball[j].pos.y + ball[j].radius) >= (block[i].rec.y - block[i].rec.height / 2)) &&
-				//					((ball[j].pos.y + ball[j].radius) < (block[i].rec.y - block[i].rec.height / 2 + ball[j].speed.y)) &&
-				//					((fabs(ball[j].pos.x - block[i].rec.x)) < (block[i].rec.width / 2 + ball[j].radius * 2 / 3)) && (ball[j].speed.y > 0))
-				//				{
-				//					block[i].active = false;
-				//					ball[j].speed.y *= -1;
-				//#if DEBUG
-				//					cout << "Hit above" << endl;
-				//#endif
-				//				}
-							//// Hit left
-							//	else if (((ball[0].pos.x + ball[0].radius) >= (block[i].rec.x - block[i].rec.width / 2)) &&
-							//		((ball[0].pos.x + ball[0].radius) < (block[i].rec.x - block[i].rec.width / 2 + ball[0].speed.x)) &&
-							//		((fabs(ball[0].pos.y - block[i].rec.y)) < (block[i].rec.height / 2 + ball[0].radius * 2 / 3)) && (ball[0].speed.x > 0)){
-							//		block[i].active = false;
-							//		ball[0].speed.x *= -1;
-							//		}
-							//// Hit right
-							//	else if (((ball[0].pos.x - ball[0].radius) <= (block[i].rec.x + block[i].rec.width / 2)) &&
-							//		((ball[0].pos.x - ball[0].radius) > (block[i].rec.x + block[i].rec.width / 2 + ball[0].speed.x)) &&
-							//		((fabs(ball[0].pos.y - block[i].rec.y)) < (block[i].rec.height / 2 + ball[0].radius * 2 / 3)) && (ball[0].speed.x < 0)){
-							//		block[i].active = false;
-							//		ball[0].speed.x *= -1;
-							//		}
-							//}
-
-			}
-		}
-		//BALLS V WALLS
-		for (int i = 0; i < BallAmount; i++) {
-			if (ball[i].active) {
-				if (((ball[i].pos.x + ball[i].radius) >= _winWidth) || ((ball[i].pos.x - ball[i].radius) <= 0)) ball[i].speed.x *= -1;
-				if ((ball[i].pos.y - ball[i].radius) <= 0) ball[i].speed.y *= -1;
-				if ((ball[i].pos.y + ball[i].radius) >= _winHeight) {
-
+				if (CheckCollisionCircleRec(ballCol[1].pos, ballCol[1].radius, block[i].rec)) {
+					block[i].active = false;
+					ball[0].speed.x *= -1.0f;
 				}
 			}
 		}
+	
+	for (int i = 0; i < BallAmount; i++) {
+		if (ball[i].active) {
+			if (((ball[i].pos.x + ball[i].radius) >= _winWidth) || ((ball[i].pos.x - ball[i].radius) <= 0)) ball[i].speed.x *= -1;
+			if ((ball[i].pos.y - ball[i].radius) <= 0) ball[i].speed.y *= -1;
+			if ((ball[i].pos.y + ball[i].radius) >= _winHeight) {
 
-		//BALLS V PLAYER
-		for (int i = 0; i < BallAmount; i++) {
-			if (CheckCollisionCircleRec(ball[i].pos, ball[i].radius, player.rec)) {
-				if (ball[i].speed.y > 0) {
-					ball[i].speed.y *= -1;
-				}
 			}
 		}
+	}
 
-		//BALLS v BOTTOM
-		for (int i = 0; i < BallAmount; i++) {
-			if (ball[i].pos.y > GetScreenHeight()) {
-				ball[i].pos = ball[i].initPos;
-				ball[i].stop = true;
+	//BALLS V PLAYER
+	for (int i = 0; i < BallAmount; i++) {
+		if (CheckCollisionCircleRec(ball[i].pos, ball[i].radius, player.rec)) {
+			if (ball[i].speed.y > 0) {
+				ball[i].speed.y *= -1;
 			}
 		}
+	}
+
+	//BALLS v BOTTOM
+	for (int i = 0; i < BallAmount; i++) {
+		if (ball[i].pos.y > GetScreenHeight()) {
+			ball[i].pos = ball[i].initPos;
+			ball[i].stop = true;
+		}
+
 	}
 }

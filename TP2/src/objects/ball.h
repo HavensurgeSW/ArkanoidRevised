@@ -10,7 +10,11 @@ struct Ball {
 	Color color;
 };
 const int BallAmount = 5;
+const int BallCollisions = 4;
+
 extern Ball ball[BallAmount];
+extern Ball ballCol[BallCollisions];
+
 extern const Vector2 InitialBallPos;
 extern const Vector2 BallSpeed;
 extern const float BallRadius;

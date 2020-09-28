@@ -53,3 +53,25 @@ void setLevelTwo() {
 	block[52].active = true;
 
 }
+
+void setLevelThree() {
+	setLevelTwo();
+
+	for (int i = 0; i < BlockAmount; i++) {
+		if (block[i].active) {
+			block[i].active = false;
+		}
+		else {
+			block[i].active = true;
+		}
+	}
+
+	block[3].active = false;
+	block[4].active = false;
+	block[11].active = false;
+	block[12].active = false;
+	block[59].active = false;
+	block[60].active = false;
+	block[67].active = false;
+	block[68].active = false;
+}
