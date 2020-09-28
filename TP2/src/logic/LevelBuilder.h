@@ -1,8 +1,10 @@
 #pragma once
 #include "objects/Block.h"
 
-extern Vector2 coordinates;
+namespace AR {
+	extern Vector2 coordinates;
 
-void setLevelOne();
-void setLevelTwo();
-void setLevelThree();
+	void setLevelOne();
+	void setLevelTwo();
+	void setLevelThree();
+}
