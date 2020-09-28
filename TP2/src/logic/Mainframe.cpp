@@ -9,7 +9,6 @@ Mainframe::Mainframe() {
 	setScene(0);
 	SetTargetFPS(60);
 
-	
 }
 
 Mainframe::~Mainframe() {
@@ -20,6 +19,8 @@ void Mainframe::init() {
 	InitWindow(_winWidth, _winHeight, "HSS - Arkanoid (Revised)");
 	SetTargetFPS(60);
 	setScene(0);
+	background = LoadTexture("../res/background.png");
+	SetExitKey(KEY_VOLUME_UP);
 }
 void Mainframe::deInit() {
 	CloseWindow();
@@ -54,17 +55,12 @@ void Mainframe::mainLoop() {
 }
 
 void Mainframe::menuScreen() {
-
+	background = LoadTexture("../res/background.png");
 	Rectangle playButton;
 	playButton.x = 20.0f;
 	playButton.y = GetScreenHeight() / 2.0f;
 	playButton.height = 30.0f;
 	playButton.width = 65.0f;
-	Rectangle optionsButton;
-	optionsButton.x = 20.0f;
-	optionsButton.y = (GetScreenHeight() / 2) + 50.0f;
-	optionsButton.height = 30.0f;
-	optionsButton.width = 113.0f;
 
 	Rectangle creditsButton;
 	creditsButton.x = 20.0f;
@@ -82,18 +78,15 @@ void Mainframe::menuScreen() {
 	while (!WindowShouldClose() && screenId == screenID::menu&&_mainBool) {
 		BeginDrawing();
 		ClearBackground(BLACK);
+		DrawTexture(background,0,-250, RAYWHITE);
 
-		DrawText(FormatText("ARKANOID"), 20, GetScreenHeight() / 8, 120, WHITE);
+		DrawText(FormatText("ARKANOID"), 20, 10, 120, WHITE);
 
 		if (CheckCollisionPointRec(GetMousePosition(), playButton))
 			DrawText(FormatText("Play"), 20, GetScreenHeight() / 2, 30, RED);
 		else
 			DrawText(FormatText("Play"), 20, GetScreenHeight() / 2, 30, WHITE);
 
-		if (CheckCollisionPointRec(GetMousePosition(), optionsButton))
-			DrawText(FormatText("Options"), 20, (GetScreenHeight() / 2) + 50, 30, RED);
-		else
-			DrawText(FormatText("Options"), 20, (GetScreenHeight() / 2) + 50, 30, WHITE);
 
 		if (CheckCollisionPointRec(GetMousePosition(), creditsButton))
 			DrawText(FormatText("Credits"), 20, (GetScreenHeight() / 2) + 100, 30, RED);
@@ -106,39 +99,28 @@ void Mainframe::menuScreen() {
 			DrawText(FormatText("Close"), 20, (GetScreenHeight() / 2) + 150, 30, WHITE);
 
 
-
 		DrawText(FormatText("v 1.0"), GetScreenWidth() - 50, 1, 20, WHITE);
-
-
-		if (CheckCollisionPointRec(GetMousePosition(), playButton) && IsMouseButtonReleased(MOUSE_LEFT_BUTTON)) {
-			setScene(1);
-		}
-
-		if (CheckCollisionPointRec(GetMousePosition(), optionsButton) && IsMouseButtonReleased(MOUSE_LEFT_BUTTON)) {
-			setScene(2);
-		}
-
-
 		if (CheckCollisionPointRec(GetMousePosition(), creditsButton)) {
-			DrawText(FormatText("Engine: Raylib 3.0"), (GetScreenWidth() / 2 + 40), (GetScreenHeight() /3) + 20, 30, WHITE);
+			DrawText(FormatText("Engine: Raylib 3.0"), (GetScreenWidth() / 2 + 40), (GetScreenHeight() / 3) + 20, 30, WHITE);
 			DrawText(FormatText("Created by:"), (GetScreenWidth() / 2 + 40), (GetScreenHeight() / 3) + 100, 30, WHITE);
 			DrawText(FormatText("Matias P. Karplus"), (GetScreenWidth() / 2 + 40), (GetScreenHeight() / 3) + 130, 30, WHITE);
 		}
-
-
+		EndDrawing();
 		if (CheckCollisionPointRec(GetMousePosition(), closeButton) && IsMouseButtonDown(MOUSE_LEFT_BUTTON)) {
 			exit(0);
 		}
-		EndDrawing();
+		if (CheckCollisionPointRec(GetMousePosition(), playButton) && IsMouseButtonReleased(MOUSE_LEFT_BUTTON)) {
+			setScene(1);
+		}
 	}
 }
 void Mainframe::gameScreen() {
+	_pause = false;
 	setBallParameters();
 	setPlayerParameters();
 	ball[0].active = true;
 	setBlockParameters();
 	setLevelTwo();
-	background = LoadTexture("../res/background.png");
 
 	while (!WindowShouldClose() && screenId == screenID::game&&_mainBool) {
 
@@ -151,13 +133,26 @@ void Mainframe::gameScreen() {
 		else {
 			BeginDrawing();
 			ClearBackground(BLACK);
-			DrawTexture(background,0,-250,RAYWHITE);
-			DrawText("PAUSED", GetScreenWidth() / 3 + 20, GetScreenHeight() / 3, 60, WHITE);
-			DrawText("RESUME [P]", GetScreenWidth() / 3 + 7, GetScreenHeight() / 3 + 120, 30, WHITE);
-			DrawText("MENU [M]", GetScreenWidth() / 3 + 90, GetScreenHeight() - 60, 30, WHITE);
+			DrawTexture(background, 0, -250, RAYWHITE);
+			DrawText("PAUSED", 10, 10, 80, WHITE);
+			DrawText("RESUME [P] / [ESC]", 10, GetScreenHeight() - 80, 30, WHITE);
+			DrawText("MENU [M]", 10, GetScreenHeight() - 40, 30, WHITE);
 			EndDrawing();
-		}
 
+			if (_pause) {
+				if (IsKeyPressed(KEY_P) || IsKeyPressed(KEY_ESCAPE)) {
+					_pause = false;
+				}
+				if (IsKeyPressed(KEY_M)) {
+					screenId = screenID::menu;
+				}
+#if DEBUG
+				std::cout << "Pause input" << std::endl;
+#endif
+
+			}
+
+		}
 	}
 
 	UnloadTexture(background);
@@ -226,17 +221,8 @@ void Mainframe::input() {
 		}
 	}
 
-	if (_pause) {
-		if (IsKeyPressed(KEY_P)) {
-			_pause = false;
-			fflush(stdin);
-		}
-		if (IsKeyPressed(KEY_M)) {
-			screenId = screenID::menu;
-		}
-	}
-	else {
-		if (IsKeyPressed(KEY_P)) {
+	if(!_pause){
+		if (IsKeyPressed(KEY_P)||IsKeyPressed(KEY_ESCAPE)) {
 			_pause = true;
 			fflush(stdin);
 		}

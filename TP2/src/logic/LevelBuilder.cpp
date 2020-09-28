@@ -11,7 +11,7 @@ void createBlocks() {
 			row = 1;
 		}
 #if DEBUG
-		std::cout << "test" << i << std::endl;
+		std::cout << "Created Block " << i << std::endl;
 #endif
 		block[i].rec.x = coordinates.x;
 		block[i].rec.y = coordinates.y;
@@ -19,6 +19,8 @@ void createBlocks() {
 		row++;
 		block[i].active = true;
 	}
+	coordinates = { 14.0f, 5.0f };
+
 }
 
 void setLevelOne() {
