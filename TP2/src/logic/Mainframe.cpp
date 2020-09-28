@@ -138,6 +138,7 @@ void Mainframe::gameScreen() {
 	ball[0].active = true;
 	setBlockParameters();
 	setLevelTwo();
+	background = LoadTexture("../res/background.png");
 
 	while (!WindowShouldClose() && screenId == screenID::game&&_mainBool) {
 
@@ -150,12 +151,18 @@ void Mainframe::gameScreen() {
 		else {
 			BeginDrawing();
 			ClearBackground(BLACK);
-			DrawText("PAUSED", GetScreenWidth() / 3.0f + 20, GetScreenHeight() / 3.0f, 60, WHITE);
-			DrawText("RESUME [P]", GetScreenWidth() / 3.0f + 70, GetScreenHeight() / 3.0f + 120, 30, WHITE);
-			DrawText("MENU [M]", GetScreenWidth() / 3.0f + 90, GetScreenHeight() - 60.0f, 30, WHITE);
+			DrawTexture(background,0,-250,RAYWHITE);
+			DrawText("PAUSED", GetScreenWidth() / 3 + 20, GetScreenHeight() / 3, 60, WHITE);
+			DrawText("RESUME [P]", GetScreenWidth() / 3 + 7, GetScreenHeight() / 3 + 120, 30, WHITE);
+			DrawText("MENU [M]", GetScreenWidth() / 3 + 90, GetScreenHeight() - 60, 30, WHITE);
 			EndDrawing();
 		}
 
+	}
+
+	UnloadTexture(background);
+	for (int i = 0; i < BlockAmount; i++){
+		UnloadTexture(block[i].BlockHedron);
 	}
 }
 void Mainframe::optionsScreen() {
@@ -184,8 +191,7 @@ void Mainframe::update() {
 void Mainframe::draw() {
 	BeginDrawing();
 	ClearBackground(BLACK);
-	//FONDO?
-
+	DrawTexture(background, 0, -250, RAYWHITE);
 	DrawRectangleRec(player.rec, GOLD);
 	for (int i = 0; i < BallAmount; i++) {
 		if (ball[i].active) {
@@ -194,13 +200,15 @@ void Mainframe::draw() {
 	}
 	for (int i = 0; i < BlockAmount; i++){
 		if (block[i].active){
-#if DEBUG
-			//cout << "Drawing Blocks" << endl;
-#endif
-			DrawRectangleRec(block[i].rec,BLUE);
 			DrawTexture(block[i].BlockHedron, block[i].rec.x, block[i].rec.y, RAYWHITE);
 		}
 	}
+#if DEBUG
+	for (int i = 0; i < BlockAmount; i++){
+		DrawRectangleLines(block[i].rec.x, block[i].rec.y, block[i].rec.width, block[i].rec.height,GREEN);
+		DrawText(FormatText("%i", i),block[i].rec.x+(block[i].rec.width/2), block[i].rec.y + (block[i].rec.height / 2), 2, GREEN);
+	}
+#endif
 
 	EndDrawing();
 	
@@ -234,78 +242,78 @@ void Mainframe::input() {
 		}
 	}
 }
-void Mainframe::collisions(){
-
+void Mainframe::collisions() {
 	//BALLS V BRICKS
-	for (int j = 0; j < BallAmount; j++){
+	for (int j = 0; j < BallAmount; j++) {
 		for (int i = 0; i < BlockAmount; i++)
 		{
-				if (block[i].active){
-					// Hit below
-					if (((ball[j].pos.y - ball[j].radius) <= (block[i].rec.y + block[i].rec.height / 2)) &&
-						((ball[j].pos.y - ball[j].radius) > (block[i].rec.y + block[i].rec.height / 2 + ball[0].speed.y)) &&
-						((fabs(ball[0].pos.x - block[i].rec.x)) < (block[i].rec.width / 2 + ball[j].radius * 2 / 3)) && (ball[j].speed.y < 0))
-					{
-						block[i].active = false;
-						ball[j].speed.y *= -1;
+			if (block[i].active) {
+				// Hit below
+				if (((ball[j].pos.y - ball[j].radius) <= (block[i].rec.y + block[i].rec.height / 2)) &&
+					((ball[j].pos.y - ball[j].radius) > (block[i].rec.y + block[i].rec.height / 2 + ball[0].speed.y)) &&
+					((fabs(ball[0].pos.x - block[i].rec.x)) < (block[i].rec.width / 2 + ball[j].radius * 2 / 3)) && (ball[j].speed.y < 0))
+				{
+					block[i].active = false;
+					ball[j].speed.y *= -1;
 #if DEBUG
-						cout << "Hit Below" << endl;
+					cout << "Hit Below" << endl;
 #endif
-					}
-					// Hit above
-					else if (((ball[j].pos.y + ball[j].radius) >= (block[i].rec.y - block[i].rec.height / 2)) &&
-						((ball[j].pos.y + ball[j].radius) < (block[i].rec.y - block[i].rec.height / 2 + ball[j].speed.y)) &&
-						((fabs(ball[j].pos.x - block[i].rec.x)) < (block[i].rec.width / 2 + ball[j].radius * 2 / 3)) && (ball[j].speed.y > 0))
-					{
-						block[i].active = false;
-						ball[j].speed.y *= -1;
-#if DEBUG
-						cout << "Hit above" << endl;
-#endif
-					}
-				//	// Hit left
-					else if (((ball[0].pos.x + ball[0].radius) >= (block[i].rec.x - block[i].rec.width / 2)) &&
-						((ball[0].pos.x + ball[0].radius) < (block[i].rec.x - block[i].rec.width / 2 + ball[0].speed.x)) &&
-						((fabs(ball[0].pos.y - block[i].rec.y)) < (block[i].rec.height / 2 + ball[0].radius * 2 / 3)) && (ball[0].speed.x > 0))
-					{
-						block[i].active = false;
-						ball[0].speed.x *= -1;
-					}
-				//	// Hit right
-					else if (((ball[0].pos.x - ball[0].radius) <= (block[i].rec.x + block[i].rec.width / 2)) &&
-						((ball[0].pos.x - ball[0].radius) > (block[i].rec.x + block[i].rec.width / 2 + ball[0].speed.x)) &&
-						((fabs(ball[0].pos.y - block[i].rec.y)) < (block[i].rec.height / 2 + ball[0].radius * 2 / 3)) && (ball[0].speed.x < 0))
-					{
-						block[i].active = false;
-						ball[0].speed.x *= -1;
-					}
 				}
-		
-		}
-	}
-	//BALLS V WALLS
-	for (int i = 0; i < BallAmount; i++){
-		if (ball[i].active){
-			if (((ball[i].pos.x + ball[i].radius) >= _winWidth) || ((ball[i].pos.x - ball[i].radius) <= 0)) ball[i].speed.x *= -1;
-			if ((ball[i].pos.y - ball[i].radius) <= 0) ball[i].speed.y *= -1;
-			if ((ball[i].pos.y + ball[i].radius) >= _winHeight);
-		}
-	}
+				//				// Hit above
+				//				else if (((ball[j].pos.y + ball[j].radius) >= (block[i].rec.y - block[i].rec.height / 2)) &&
+				//					((ball[j].pos.y + ball[j].radius) < (block[i].rec.y - block[i].rec.height / 2 + ball[j].speed.y)) &&
+				//					((fabs(ball[j].pos.x - block[i].rec.x)) < (block[i].rec.width / 2 + ball[j].radius * 2 / 3)) && (ball[j].speed.y > 0))
+				//				{
+				//					block[i].active = false;
+				//					ball[j].speed.y *= -1;
+				//#if DEBUG
+				//					cout << "Hit above" << endl;
+				//#endif
+				//				}
+							//// Hit left
+							//	else if (((ball[0].pos.x + ball[0].radius) >= (block[i].rec.x - block[i].rec.width / 2)) &&
+							//		((ball[0].pos.x + ball[0].radius) < (block[i].rec.x - block[i].rec.width / 2 + ball[0].speed.x)) &&
+							//		((fabs(ball[0].pos.y - block[i].rec.y)) < (block[i].rec.height / 2 + ball[0].radius * 2 / 3)) && (ball[0].speed.x > 0)){
+							//		block[i].active = false;
+							//		ball[0].speed.x *= -1;
+							//		}
+							//// Hit right
+							//	else if (((ball[0].pos.x - ball[0].radius) <= (block[i].rec.x + block[i].rec.width / 2)) &&
+							//		((ball[0].pos.x - ball[0].radius) > (block[i].rec.x + block[i].rec.width / 2 + ball[0].speed.x)) &&
+							//		((fabs(ball[0].pos.y - block[i].rec.y)) < (block[i].rec.height / 2 + ball[0].radius * 2 / 3)) && (ball[0].speed.x < 0)){
+							//		block[i].active = false;
+							//		ball[0].speed.x *= -1;
+							//		}
+							//}
 
-	//BALLS V PLAYER
-	for (int i = 0; i < BallAmount; i++){
-		if (CheckCollisionCircleRec(ball[i].pos, ball[i].radius, player.rec)){
-			if (ball[i].speed.y > 0){
-				ball[i].speed.y *= -1;
 			}
 		}
-	}
+		//BALLS V WALLS
+		for (int i = 0; i < BallAmount; i++) {
+			if (ball[i].active) {
+				if (((ball[i].pos.x + ball[i].radius) >= _winWidth) || ((ball[i].pos.x - ball[i].radius) <= 0)) ball[i].speed.x *= -1;
+				if ((ball[i].pos.y - ball[i].radius) <= 0) ball[i].speed.y *= -1;
+				if ((ball[i].pos.y + ball[i].radius) >= _winHeight) {
 
-	//BALLS v BOTTOM
-	for (int i = 0; i < BallAmount; i++){
-		if (ball[i].pos.y>GetScreenHeight()){
-			ball[i].pos = ball[i].initPos;
-			ball[i].stop = true;
+				}
+			}
+		}
+
+		//BALLS V PLAYER
+		for (int i = 0; i < BallAmount; i++) {
+			if (CheckCollisionCircleRec(ball[i].pos, ball[i].radius, player.rec)) {
+				if (ball[i].speed.y > 0) {
+					ball[i].speed.y *= -1;
+				}
+			}
+		}
+
+		//BALLS v BOTTOM
+		for (int i = 0; i < BallAmount; i++) {
+			if (ball[i].pos.y > GetScreenHeight()) {
+				ball[i].pos = ball[i].initPos;
+				ball[i].stop = true;
+			}
 		}
 	}
 }

@@ -23,6 +23,9 @@ public:
 		options,
 	};
 	screenID screenId;
+	Texture2D background;
+
+	
 
 	Mainframe();
 	~Mainframe();
