@@ -252,6 +252,8 @@ namespace AR {
 		}
 		if (ball[0].stop) {
 			DrawText("-SPACE-", GetScreenWidth() / 2 - 70, GetScreenHeight() - 100, 30, WHITE);
+			DrawText("Lives: ", GetScreenWidth() / 2 - 50, GetScreenHeight() - 130, 30, WHITE);
+			DrawText(FormatText("%i", player.lives), GetScreenWidth() / 2+40, GetScreenHeight() - 130, 30, WHITE);
 		}
 #if DEBUG
 		for (int i = 0; i < BlockAmount; i++) {
