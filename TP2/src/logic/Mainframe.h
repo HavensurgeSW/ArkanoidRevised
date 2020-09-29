@@ -1,4 +1,5 @@
-#pragma once
+#ifndef MAINFRAME_H
+#define MAINFRAME_H
 #include "raylib.h"
 #include "objects/player.h"
 #include "objects/ball.h"
@@ -44,5 +45,6 @@ namespace AR {
 
 	};
 }
+#endif
 
 

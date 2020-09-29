@@ -1,4 +1,5 @@
-#pragma once
+#ifndef LEVELBUILDER_H
+#define LEVELBUILDER_H
 #include "objects/Block.h"
 
 namespace AR {
@@ -8,3 +9,4 @@ namespace AR {
 	void setLevelTwo();
 	void setLevelThree();
 }
+#endif

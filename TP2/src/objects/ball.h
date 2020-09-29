@@ -1,4 +1,5 @@
-#pragma once
+#ifndef BALL_H
+#define BALL_H
 #include "raylib.h"
 namespace AR {
 	struct Ball {
@@ -25,4 +26,5 @@ namespace AR {
 
 	void setBallParameters();
 }
+#endif
 

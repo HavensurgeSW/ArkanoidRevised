@@ -1,4 +1,5 @@
-#pragma once
+#ifndef PLAYER_H
+#define PLAYER_H
 #include "raylib.h"
 namespace AR {
 
@@ -15,3 +16,4 @@ namespace AR {
 		void setPlayerParameters();
 
 }
+#endif

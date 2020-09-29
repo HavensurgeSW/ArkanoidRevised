@@ -100,7 +100,7 @@ namespace AR {
 				DrawText(FormatText("Close"), 20, (GetScreenHeight() / 2) + 150, 30, WHITE);
 
 
-			DrawText(FormatText("v 1.0"), GetScreenWidth() - 50, 1, 20, WHITE);
+			DrawText(FormatText("v 0.9"), GetScreenWidth() - 50, 1, 20, WHITE);
 			if (CheckCollisionPointRec(GetMousePosition(), creditsButton)) {
 				DrawText(FormatText("Engine: Raylib 3.0"), (GetScreenWidth() / 2 + 40), (GetScreenHeight() / 3) + 20, 30, WHITE);
 				DrawText(FormatText("Created by:"), (GetScreenWidth() / 2 + 40), (GetScreenHeight() / 3) + 100, 30, WHITE);
@@ -197,7 +197,9 @@ namespace AR {
 			}
 		}
 
-
+		if (player.lives<=0){
+			setScene(0);
+		}
 
 	}
 	void Mainframe::draw() {
@@ -292,6 +294,7 @@ namespace AR {
 			if (ball[i].pos.y > GetScreenHeight()) {
 				ball[i].pos = ball[i].initPos;
 				ball[i].stop = true;
+				player.lives--;
 			}
 
 		}

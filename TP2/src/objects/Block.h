@@ -1,4 +1,5 @@
-#pragma once
+#ifndef BLOCK_H
+#define BLOCK_H
 #include "raylib.h"
 #include <iostream>
 
@@ -16,3 +17,5 @@ namespace AR {
 
 	void setBlockParameters();
 }
+
+#endif
