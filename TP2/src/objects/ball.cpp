@@ -23,16 +23,16 @@ namespace AR {
 			ball[i].stop = BallStop;
 			ball[i].color = BallColor;
 		}
-		ballCol[0].initPos.y = InitialBallPos.y - 5.0f;
+		ballCol[0].initPos.y = InitialBallPos.y - 6.0f;
 		ballCol[0].initPos.x = InitialBallPos.x;
 
-		ballCol[1].initPos.x = InitialBallPos.x + 5.0f;
+		ballCol[1].initPos.x = InitialBallPos.x + 6.0f;
 		ballCol[1].initPos.y = InitialBallPos.y;
 
-		ballCol[2].initPos.y = InitialBallPos.y + 5.0f;
+		ballCol[2].initPos.y = InitialBallPos.y + 6.0f;
 		ballCol[2].initPos.x = InitialBallPos.x;
 
-		ballCol[3].initPos.x = InitialBallPos.x - 5.0f;
+		ballCol[3].initPos.x = InitialBallPos.x - 6.0f;
 		ballCol[3].initPos.y = InitialBallPos.y;
 		for (int i = 0; i < BallCollisions; i++) {
 			ballCol[i].pos = ballCol[i].initPos;

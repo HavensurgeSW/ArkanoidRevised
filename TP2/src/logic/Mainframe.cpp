@@ -39,7 +39,13 @@ namespace AR {
 			break;
 		}
 	}
-
+	void Mainframe::countBlocks() {
+		for (int i = 0; i < BlockAmount; i++) {
+			if (block[i].active) {
+				winLevel++;
+			}
+		}
+	}
 
 	void Mainframe::mainLoop() {
 
@@ -116,12 +122,19 @@ namespace AR {
 		}
 	}
 	void Mainframe::gameScreen() {
+		winLevel = 0;
 		_pause = false;
 		setBallParameters();
 		setPlayerParameters();
 		ball[0].active = true;
 		setBlockParameters();
+
+		level = 1;
 		setLevelOne();
+		countBlocks();
+#if DEBUG
+		std::cout << winLevel << std::endl;
+#endif
 
 		while (!WindowShouldClose() && screenId == screenID::game&&_mainBool) {
 
@@ -170,12 +183,12 @@ namespace AR {
 			ball[0].pos.x = player.rec.x + player.rec.width / 2;
 
 			ballCol[0].pos.x = ball[0].pos.x;
-			ballCol[0].pos.y = ball[0].pos.y - 5.0f;
-			ballCol[1].pos.x = ball[0].pos.x + 5.0f;
+			ballCol[0].pos.y = ball[0].pos.y - 6.0f;
+			ballCol[1].pos.x = ball[0].pos.x + 6.0f;
 			ballCol[1].pos.y = ball[0].pos.y;
 			ballCol[2].pos.x = ball[0].pos.x;
-			ballCol[2].pos.y = ball[0].pos.y + 5.0f;
-			ballCol[3].pos.x = ball[0].pos.x - 5.0f;
+			ballCol[2].pos.y = ball[0].pos.y + 6.0f;
+			ballCol[3].pos.x = ball[0].pos.x - 6.0f;
 			ballCol[3].pos.y = ball[0].pos.y;
 		}
 
@@ -200,6 +213,26 @@ namespace AR {
 		if (player.lives<=0){
 			setScene(0);
 		}
+
+		if (winLevel<=0){
+			if (level ==1){
+				setLevelTwo();
+				countBlocks();
+				ball[0].pos = ball[0].initPos;
+				ball[0].stop = true;
+			}
+			if (level==2){
+				setLevelThree();
+				countBlocks();
+				ball[0].pos = ball[0].initPos;
+				ball[0].stop = true;
+			}
+			if (level==3){
+				setScene(0);
+			}
+			level++;
+		}
+		
 
 	}
 	void Mainframe::draw() {
@@ -248,12 +281,6 @@ namespace AR {
 			}
 		}
 
-		if (!_pause) {
-			if (IsKeyReleased(KEY_P) || IsKeyDown(KEY_ESCAPE)) {
-				_pause = true;
-				fflush(stdin);
-			}
-		}
 	}
 	void Mainframe::collisions() {
 		//BALLS V BRICKS
@@ -262,10 +289,18 @@ namespace AR {
 				if (CheckCollisionCircleRec(ballCol[0].pos, ballCol[0].radius, block[i].rec)) {
 					block[i].active = false;
 					ball[0].speed.y *= -1.0f;
+					winLevel--;
+#if DEBUG
+					std::cout << winLevel << std::endl;
+#endif
 				}
 				if (CheckCollisionCircleRec(ballCol[1].pos, ballCol[1].radius, block[i].rec)) {
 					block[i].active = false;
 					ball[0].speed.x *= -1.0f;
+					winLevel--;
+#if DEBUG
+					std::cout << winLevel << std::endl;
+#endif
 				}
 			}
 		}

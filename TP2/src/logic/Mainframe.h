@@ -25,6 +25,8 @@ namespace AR {
 		};
 		screenID screenId;
 		Texture2D background;
+		int winLevel;
+		int level;
 
 		Mainframe();
 		~Mainframe();
@@ -32,6 +34,7 @@ namespace AR {
 		void deInit();
 
 		void setScene(int scene);
+		void countBlocks();
 		void mainLoop();
 		void menuScreen();
 		void gameScreen();
