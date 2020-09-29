@@ -106,7 +106,7 @@ namespace AR {
 				DrawText(FormatText("Close"), 20, (GetScreenHeight() / 2) + 150, 30, WHITE);
 
 
-			DrawText(FormatText("v 0.9"), GetScreenWidth() - 50, 1, 20, WHITE);
+			DrawText(FormatText("v 1.0"), GetScreenWidth() - 50, 1, 20, WHITE);
 			if (CheckCollisionPointRec(GetMousePosition(), creditsButton)) {
 				DrawText(FormatText("Engine: Raylib 3.0"), (GetScreenWidth() / 2 + 40), (GetScreenHeight() / 3) + 20, 30, WHITE);
 				DrawText(FormatText("Created by:"), (GetScreenWidth() / 2 + 40), (GetScreenHeight() / 3) + 100, 30, WHITE);
